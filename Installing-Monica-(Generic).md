@@ -45,18 +45,18 @@ Once the softwares above are installed:
 
 ### 1. Clone the repository
 
-You may install Monica by simply closing the repository. Consider cloning the repository into any folder, example here in your 'home' directory:
+You may install Monica by simply closing the repository. In order for this to work with Apache, which is often pre-pacakged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder: Consider cloning the repository into any folder, example here in your 'home' directory:
 ```sh
-cd ~
+cd /var/www/html
 git clone https://github.com/monicahq/monica.git
 ```
 
 You should check out a tagged version of Monica since `master` branch may not always be stable.
 Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
 ```sh
-cd ~/monica
+cd /var/www/html/monica
 # Clone the desired version
-git checkout tags/v1.6.2
+git checkout tags/v2.2.1
 ```
 
 ### 2. Setup the database
@@ -89,7 +89,7 @@ exit
 
 ### 3. Configure Monica
 
-`cd ~/monica` then run these steps:
+`cd /var/www/html/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
@@ -99,7 +99,51 @@ exit
 1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
 1. Finally, Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and triggers the following command `php artisan schedule:run`.
 
-### 4. **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
+### 4. Configure Apache
+
+`cd /var/www/html` then follow these steps:
+
+1. Give proper permissions to the project directory by running:
+```
+sudo chgrp -R www-data /monica
+sudo chmod -R 775 /monica/storage
+```
+2. Configure our new monica installation in apache by doing:
+
+```
+cd /etc/apache2/sites-available
+sudo nano laravel.conf
+```
+
+3. Then, in the `nano` text editor window you just opened, copy the following - swapping the `YOUR IP ADDRESS/DOMAIN` with your server's IP address/associated domain:
+
+```html
+<VirtualHost *:80>
+    ServerName YOUR IP ADDRESS/DOMAIN
+
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/monica/public
+
+    <Directory /var/www/html/monica>
+        AllowOverride All
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+
+4. Now we need to wrap up by applying the new `.conf` file and restarting Apache. You can do that by running:
+
+```
+sudo a2dissite 000-default.conf
+sudo a2ensite laravel.conf
+sudo a2enmod rewrite
+sudo service apache2 restart
+```
+
+### 5. **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
 
 Monica can work with a queue mechanism to handle different events, so we don't block the main thread while processing stuff that can be run asynchronously, like sending emails. By default, Monica does not use a queue mechanism but can be setup to do so.
 
