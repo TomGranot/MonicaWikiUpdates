@@ -10,7 +10,7 @@ Install the software [listed here](Installation-instructions#requirements). Then
 
 ### 1. Clone the repository
 
-YYou may install Monica by simply closing the repository. In order for this to work with Apache, which is often pre-pacakged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder: Consider cloning the repository into any folder, example here in your 'home' directory:
+You may install Monica by simply closing the repository. In order for this to work with Apache, which is often pre-pacakged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder: Consider cloning the repository into any folder, example here in your 'home' directory:
 ```sh
 cd /var/www/html
 git clone https://github.com/monicahq/monica.git
@@ -20,7 +20,6 @@ You should check out a tagged version of Monica since `master` branch may not al
 Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
 ```sh
 cd /var/www/html/monica
-# Clone the desired version
 git checkout tags/v2.2.1
 ```
 
@@ -69,13 +68,14 @@ exit
 `cd /var/www/html` then follow these steps:
 
 1. Give proper permissions to the project directory by running:
-```
+
+```sh
 sudo chgrp -R www-data /monica
 sudo chmod -R 775 /monica/storage
 ```
 2. Configure our new monica installation in apache by doing:
 
-```
+```sh
 cd /etc/apache2/sites-available
 sudo nano laravel.conf
 ```
@@ -101,7 +101,7 @@ sudo nano laravel.conf
 
 4. Now we need to wrap up by applying the new `.conf` file and restarting Apache. You can do that by running:
 
-```
+```sh
 sudo a2dissite 000-default.conf
 sudo a2ensite laravel.conf
 sudo a2enmod rewrite
