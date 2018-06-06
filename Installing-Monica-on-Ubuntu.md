@@ -10,14 +10,15 @@ Install the software [listed here](Installation-instructions#requirements). Then
 
 ### 1. Clone the repository
 
-You may install Monica by simply closing the repository. In order for this to work with Apache, which is often pre-pacakged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder: Consider cloning the repository into any folder, example here in your 'home' directory:
+You may install Monica by simply closing the repository. In order for this to work with Apache, which is often pre-pacakged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder:
+
 ```sh
 cd /var/www/html
 git clone https://github.com/monicahq/monica.git
 ```
 
-You should check out a tagged version of Monica since `master` branch may not always be stable.
-Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
+You should check out a tagged version of Monica since `master` branch may not always be stable. Find the latest official version on the [release page](https://github.com/monicahq/monica/releases):
+
 ```sh
 cd /var/www/html/monica
 git checkout tags/v2.2.1

@@ -50,8 +50,7 @@ cd /var/www/html
 git clone https://github.com/monicahq/monica.git
 ```
 
-You should check out a tagged version of Monica since `master` branch may not always be stable.
-Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
+You should check out a tagged version of Monica since `master` branch may not always be stable. Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
 
 ```sh
 cd /var/www/html/monica
